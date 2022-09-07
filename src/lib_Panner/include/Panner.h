@@ -3,14 +3,16 @@
 #include "Lfo.h"
 #include "Exception.h"
 
+#include <vector>
+#include <tuple>
+
 class Panner {
 public:
-	Panner(float sampleRate, int numOutputChannels = 2);
+	Panner(float sampleRate);
 	~Panner();
 
-	void process(const float* inputBuffer, float** outputBuffer, const int numSamples);
+	std::tuple<float, float> process(float input);
 private:
 	float mSampleRate;
-	int mNumOutputChannels;
-	std::unique_ptr<Lfo> mLfo;
+	std::array<std::unique_ptr<Lfo>, 2> mLfos;
 };

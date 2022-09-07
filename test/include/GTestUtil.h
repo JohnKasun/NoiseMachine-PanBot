@@ -33,4 +33,11 @@ struct GTestUtil {
     }
     return Error_t::kNoError;
   }
+  static Error_t compare(std::vector<float> buff1, std::vector<float> buff2, float tolerance = 1E-3) {
+      auto minSize = std::min<int>(buff1.size(), buff2.size());
+      for (auto i = 0; i < minSize; i++) {
+          EXPECT_NEAR(buff1[i], buff2[i], tolerance);
+      }
+      return Error_t::kNoError;
+  }
 };
