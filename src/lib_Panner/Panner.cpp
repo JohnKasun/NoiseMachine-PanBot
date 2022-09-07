@@ -8,6 +8,8 @@ Panner::Panner(float sampleRate, int numOutputChannels)
 	mSampleRate = sampleRate;
 	mNumOutputChannels = numOutputChannels;
 	mLfo.reset(new Lfo(mSampleRate));
+	mLfo->setParam(Lfo::amplitude, 1.0f);
+	mLfo->setParam(Lfo::dc, mLfo->getParam(Lfo::amplitude) * 0.5f); 
 }
 
 Panner::~Panner()
@@ -17,4 +19,6 @@ Panner::~Panner()
 
 void Panner::process(const float* inputBuffer, float** outputBuffer, const int numSamples)
 {
+	// Left Channel : inputBuffer[i] * mLfo.process()
+	// Right Channel : inputBufer[i] * (1 - mLfo.process())
 }
