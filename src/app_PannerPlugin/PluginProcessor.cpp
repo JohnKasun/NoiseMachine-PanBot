@@ -4,13 +4,8 @@
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
      : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
+                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true))
 {
 }
 
@@ -26,29 +21,17 @@ const juce::String AudioPluginAudioProcessor::getName() const
 
 bool AudioPluginAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
-    return true;
-   #else
     return false;
-   #endif
 }
 
 bool AudioPluginAudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
-    return true;
-   #else
     return false;
-   #endif
 }
 
 bool AudioPluginAudioProcessor::isMidiEffect() const
 {
-   #if JucePlugin_IsMidiEffect
-    return true;
-   #else
     return false;
-   #endif
 }
 
 double AudioPluginAudioProcessor::getTailLengthSeconds() const
@@ -86,39 +69,29 @@ void AudioPluginAudioProcessor::changeProgramName (int index, const juce::String
 //==============================================================================
 void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
     juce::ignoreUnused (sampleRate, samplesPerBlock);
-    mPanner.reset(new Panner(sampleRate));
+    for (auto& panner : mPanner) {
+        panner.reset(new Panner(sampleRate));
+    }
 }
 
 void AudioPluginAudioProcessor::releaseResources()
 {
-    mPanner.reset();
+    for (auto& panner : mPanner) {
+        panner.reset();
+    }
 }
 
 bool AudioPluginAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
-    juce::ignoreUnused (layouts);
-    return true;
-  #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    // Some plugin hosts, such as certain GarageBand versions, will only
-    // load plugins that support stereo bus layouts.
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
      && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
-    // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
+    if (layouts.getMainOutputChannelSet() < layouts.getMainInputChannelSet())
         return false;
-   #endif
 
     return true;
-  #endif
 }
 
 void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
@@ -127,18 +100,32 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::ignoreUnused (midiMessages);
 
     juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+    auto inputBuffer = getBusBuffer(buffer, true, 0);
+    auto outputBuffer = getBusBuffer(buffer, false, 0);
 
-    auto* channelData = buffer.getReadPointer(0);
-    for (int i = 0; i < buffer.getNumSamples(); i++) {
-        auto output = mPanner->process(channelData[i]);
-        buffer.getWritePointer(0)[i] = std::get<0>(output);
-        buffer.getWritePointer(1)[i] = std::get<1>(output);
+    if (inputBuffer.getNumChannels() == 1) {
+        auto* channelData = inputBuffer.getReadPointer(0);
+        for (int i = 0; i < inputBuffer.getNumSamples(); i++) {
+            auto output = mPanner.at(0)->process(channelData[i]);
+            outputBuffer.getWritePointer(0)[i] = std::get<0>(output);
+            outputBuffer.getWritePointer(1)[i] = std::get<1>(output);
+        }
     }
+    else {
+        auto* inputL = inputBuffer.getReadPointer(0);
+        auto* inputR = inputBuffer.getReadPointer(1);
+        for (int i = 0; i < inputBuffer.getNumSamples(); i++) {
+            auto outputL = mPanner.at(0)->process(inputL[i]);
+            auto outputR = mPanner.at(1)->process(inputR[i]);
+
+            outputBuffer.getWritePointer(0)[i] = std::get<0>(outputL);
+            outputBuffer.getWritePointer(1)[i] = std::get<1>(outputR);
+            outputBuffer.getWritePointer(0)[i] = std::get<0>(outputR);
+            outputBuffer.getWritePointer(1)[i] = std::get<1>(outputL);
+        }
+    }
+
 }
 
 //==============================================================================
@@ -155,16 +142,11 @@ juce::AudioProcessorEditor* AudioPluginAudioProcessor::createEditor()
 //==============================================================================
 void AudioPluginAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
     juce::ignoreUnused (destData);
 }
 
 void AudioPluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
     juce::ignoreUnused (data, sizeInBytes);
 }
 

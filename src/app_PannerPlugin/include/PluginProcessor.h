@@ -48,5 +48,5 @@ private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
 
-    std::unique_ptr<Panner> mPanner;
+    std::array<std::unique_ptr<Panner>, 2> mPanner;
 };
