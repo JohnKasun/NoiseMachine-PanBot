@@ -120,9 +120,9 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             auto outputR = mPanner.at(1)->process(inputR[i]);
 
             outputBuffer.getWritePointer(0)[i] = std::get<0>(outputL);
-            outputBuffer.getWritePointer(1)[i] = std::get<1>(outputR);
-            outputBuffer.getWritePointer(0)[i] = std::get<0>(outputR);
             outputBuffer.getWritePointer(1)[i] = std::get<1>(outputL);
+            outputBuffer.getWritePointer(0)[i] = std::get<1>(outputR);
+            outputBuffer.getWritePointer(1)[i] = std::get<0>(outputR);
         }
     }
 
