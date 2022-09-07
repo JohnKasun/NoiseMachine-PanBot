@@ -1,0 +1,4 @@
+add_subdirectory(app_PannerPlugin)
+add_subdirectory(lib_Lfo)
+add_subdirectory(lib_Panner)
+add_subdirectory(lib_Wavetable)

@@ -1,0 +1,3 @@
+[submodule "src/app_PannerPlugin/JUCE"]
+	path = src/app_PannerPlugin/JUCE
+	url = https://github.com/juce-framework/JUCE.git
