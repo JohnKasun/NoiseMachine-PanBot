@@ -4,7 +4,7 @@
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
      : AudioProcessor (BusesProperties()
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+                       .withInput  ("Input",  juce::AudioChannelSet::mono(), true)
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true))
 {
 }
@@ -84,11 +84,11 @@ void AudioPluginAudioProcessor::releaseResources()
 
 bool AudioPluginAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
-    if (layouts.getMainOutputChannelSet() < layouts.getMainInputChannelSet())
+    if (layouts.getMainInputChannelSet() != juce::AudioChannelSet::mono()
+        && layouts.getMainInputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
     return true;
@@ -121,8 +121,8 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
             outputBuffer.getWritePointer(0)[i] = std::get<0>(outputL);
             outputBuffer.getWritePointer(1)[i] = std::get<1>(outputL);
-            outputBuffer.getWritePointer(0)[i] = std::get<1>(outputR);
-            outputBuffer.getWritePointer(1)[i] = std::get<0>(outputR);
+            outputBuffer.getWritePointer(0)[i] += std::get<0>(outputR);
+            outputBuffer.getWritePointer(1)[i] += std::get<1>(outputR);
         }
     }
 
