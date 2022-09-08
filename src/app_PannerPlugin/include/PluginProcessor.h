@@ -47,6 +47,9 @@ public:
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
+    juce::AudioProcessorValueTreeState mParameters;
 
     std::array<std::unique_ptr<Panner>, 2> mPanner;
+    std::atomic<float>* mWidth;
+    std::atomic<float>* mSpeed;
 };

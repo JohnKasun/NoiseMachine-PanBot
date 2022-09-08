@@ -5,8 +5,14 @@
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
      : AudioProcessor (BusesProperties()
                        .withInput  ("Input",  juce::AudioChannelSet::mono(), true)
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true))
+                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)),
+    mParameters(*this, nullptr, juce::Identifier("Parameters"), {
+        std::make_unique<juce::AudioParameterFloat>("width", "Width", 0, 100, 100),
+        std::make_unique<juce::AudioParameterFloat>("speed", "Speed", 1, 5, 1)
+        })
 {
+    mWidth = mParameters.getRawParameterValue("width");
+    mSpeed = mParameters.getRawParameterValue("speed");
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -98,12 +104,16 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
                                               juce::MidiBuffer& midiMessages)
 {
     juce::ignoreUnused (midiMessages);
-
     juce::ScopedNoDenormals noDenormals;
+
+    for (auto& panner : mPanner) {
+        panner->setWidth(*mWidth);
+        panner->setSpeed(*mSpeed);
+    }
 
     auto inputBuffer = getBusBuffer(buffer, true, 0);
     auto outputBuffer = getBusBuffer(buffer, false, 0);
-
+    
     if (inputBuffer.getNumChannels() == 1) {
         auto* channelData = inputBuffer.getReadPointer(0);
         for (int i = 0; i < inputBuffer.getNumSamples(); i++) {
@@ -136,18 +146,25 @@ bool AudioPluginAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* AudioPluginAudioProcessor::createEditor()
 {
-    return new AudioPluginAudioProcessorEditor (*this);
+    return new AudioPluginAudioProcessorEditor (*this, mParameters);
 }
 
 //==============================================================================
 void AudioPluginAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    juce::ignoreUnused (destData);
+    auto state = mParameters.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void AudioPluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    juce::ignoreUnused (data, sizeInBytes);
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+    if (xmlState.get() != nullptr) {
+        if (xmlState->hasTagName(mParameters.state.getType())) {
+            mParameters.replaceState(juce::ValueTree::fromXml(*xmlState));
+        }
+    }
 }
 
 //==============================================================================
