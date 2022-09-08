@@ -11,6 +11,9 @@ public:
 	Panner(float sampleRate);
 	~Panner();
 
+	void setWidth(float widthInPercent);
+	void setSpeed(float speedInHz);
+
 	std::tuple<float, float> process(float input);
 private:
 	float mSampleRate;
