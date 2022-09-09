@@ -52,4 +52,5 @@ private:
     std::array<std::unique_ptr<Panner>, 2> mPanner;
     std::atomic<float>* mWidth;
     std::atomic<float>* mSpeed;
+    std::atomic<float>* mOffset;
 };

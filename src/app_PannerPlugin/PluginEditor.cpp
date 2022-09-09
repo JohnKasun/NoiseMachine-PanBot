@@ -17,7 +17,12 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     mSpeedSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     mSpeedSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, true, labelWidth, sliderHeight);
 
-    setSize (sliderWidth + labelWidth, 2 * sliderHeight);
+    addAndMakeVisible(mOffsetSlider);
+    mOffsetAttachment.reset(new SliderAttachment(mVts, "offset", mOffsetSlider));
+    mOffsetSlider.setSliderStyle(juce::Slider::LinearHorizontal);
+    mOffsetSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, true, labelWidth, sliderHeight);
+
+    setSize (sliderWidth + labelWidth, 3 * sliderHeight);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -34,8 +39,7 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 void AudioPluginAudioProcessorEditor::resized()
 {
     auto area = getLocalBounds();
-    auto top = area.removeFromTop(sliderHeight);
-
-    mWidthSlider.setBounds(top);
-    mSpeedSlider.setBounds(area);
+    mWidthSlider.setBounds(area.removeFromTop(sliderHeight));
+    mSpeedSlider.setBounds(area.removeFromTop(sliderHeight));
+    mOffsetSlider.setBounds(area.removeFromTop(sliderHeight));
 }

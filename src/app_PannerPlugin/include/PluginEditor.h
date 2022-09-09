@@ -31,5 +31,8 @@ private:
     juce::Slider mSpeedSlider;
     std::unique_ptr<SliderAttachment> mSpeedAttachment;
 
+    juce::Slider mOffsetSlider;
+    std::unique_ptr<SliderAttachment> mOffsetAttachment;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };

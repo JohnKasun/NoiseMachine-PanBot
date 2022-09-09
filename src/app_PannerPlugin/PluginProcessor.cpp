@@ -8,11 +8,13 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)),
     mParameters(*this, nullptr, juce::Identifier("Parameters"), {
         std::make_unique<juce::AudioParameterFloat>("width", "Width", 0, 100, 100),
-        std::make_unique<juce::AudioParameterFloat>("speed", "Speed", 1, 5, 1)
+        std::make_unique<juce::AudioParameterFloat>("speed", "Speed", 1, 5, 1),
+        std::make_unique<juce::AudioParameterFloat>("offset", "Offset", -100, 100, 0)
         })
 {
     mWidth = mParameters.getRawParameterValue("width");
     mSpeed = mParameters.getRawParameterValue("speed");
+    mOffset = mParameters.getRawParameterValue("offset");
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -109,7 +111,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (auto& panner : mPanner) {
         panner->setWidth(*mWidth);
         panner->setSpeed(*mSpeed);
-        panner->setOffset(-100);
+        panner->setOffset(*mOffset);
     }
 
     auto inputBuffer = getBusBuffer(buffer, true, 0);
