@@ -109,6 +109,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (auto& panner : mPanner) {
         panner->setWidth(*mWidth);
         panner->setSpeed(*mSpeed);
+        panner->setOffset(-100);
     }
 
     auto inputBuffer = getBusBuffer(buffer, true, 0);

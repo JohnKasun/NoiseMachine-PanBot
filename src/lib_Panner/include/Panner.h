@@ -13,6 +13,7 @@ public:
 
 	void setWidth(float widthInPercent);
 	void setSpeed(float speedInHz);
+	void setOffset(float offset);
 
 	std::tuple<float, float> process(float input);
 private:
