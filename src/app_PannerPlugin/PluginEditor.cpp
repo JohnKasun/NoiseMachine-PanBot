@@ -9,20 +9,24 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
 
     addAndMakeVisible(mWidthSlider);
     mWidthAttachment.reset(new SliderAttachment(mVts, "width", mWidthSlider));
-    mWidthSlider.setSliderStyle(juce::Slider::LinearHorizontal);
-    mWidthSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, true, labelWidth, sliderHeight);
+    mWidthSlider.setSliderStyle(juce::Slider::Rotary);
+    mWidthSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    mWidthSlider.setName("Width");
+    mWidthSlider.setLookAndFeel(&mMyLookAndFeel);
 
     addAndMakeVisible(mSpeedSlider);
     mSpeedAttachment.reset(new SliderAttachment(mVts, "speed", mSpeedSlider));
-    mSpeedSlider.setSliderStyle(juce::Slider::LinearHorizontal);
-    mSpeedSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, true, labelWidth, sliderHeight);
+    mSpeedSlider.setSliderStyle(juce::Slider::Rotary);
+    mSpeedSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    mSpeedSlider.setName("Speed");
+    mSpeedSlider.setLookAndFeel(&mMyLookAndFeel);
 
     addAndMakeVisible(mOffsetSlider);
     mOffsetAttachment.reset(new SliderAttachment(mVts, "offset", mOffsetSlider));
     mOffsetSlider.setSliderStyle(juce::Slider::LinearHorizontal);
-    mOffsetSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, true, labelWidth, sliderHeight);
+    mOffsetSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
 
-    setSize (sliderWidth + labelWidth, 3 * sliderHeight);
+    setSize (knobWidth * 2, knobWidth + sliderHeight);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -39,7 +43,8 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 void AudioPluginAudioProcessorEditor::resized()
 {
     auto area = getLocalBounds();
-    mWidthSlider.setBounds(area.removeFromTop(sliderHeight));
-    mSpeedSlider.setBounds(area.removeFromTop(sliderHeight));
-    mOffsetSlider.setBounds(area.removeFromTop(sliderHeight));
+    auto knobArea = area.removeFromTop(knobWidth);
+    mWidthSlider.setBounds(knobArea.removeFromLeft(knobWidth));
+    mSpeedSlider.setBounds(knobArea);
+    mOffsetSlider.setBounds(area);
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PluginProcessor.h"
+#include "MyLookAndFeel.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor
@@ -8,9 +9,8 @@ class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor
 public:
 
     enum {
-        sliderWidth = 500,
+        knobWidth = 200,
         sliderHeight = 100,
-        labelWidth = 100
     };
     explicit AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor&, juce::AudioProcessorValueTreeState&);
     ~AudioPluginAudioProcessorEditor() override;
@@ -24,6 +24,7 @@ public:
 private:
     AudioPluginAudioProcessor& processorRef;
     juce::AudioProcessorValueTreeState& mVts;
+    MyLookAndFeel mMyLookAndFeel;
 
     juce::Slider mWidthSlider;
     std::unique_ptr<SliderAttachment> mWidthAttachment;

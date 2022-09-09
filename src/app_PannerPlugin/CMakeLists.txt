@@ -11,7 +11,8 @@ juce_add_plugin(${APP}
 target_sources(${APP}
     PRIVATE
         PluginEditor.cpp
-        PluginProcessor.cpp)
+        PluginProcessor.cpp
+        MyLookAndFeel.cpp)
 
 target_include_directories(${APP} PRIVATE include)
 
