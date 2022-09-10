@@ -125,6 +125,9 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             outputSumL += std::get<0>(output);
             outputSumR += std::get<1>(output);
         }
+        for (auto j = inputBuffer.getNumChannels(); j < mPanner.size(); j++) {
+            mPanner.at(j)->process(0.0f); // Dummy call to keep lfos in sync
+        }
         outputBuffer.getWritePointer(0)[i] = outputSumL;
         outputBuffer.getWritePointer(1)[i] = outputSumR;
     }
