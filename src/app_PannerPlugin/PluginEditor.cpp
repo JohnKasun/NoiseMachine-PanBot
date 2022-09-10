@@ -27,10 +27,12 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     mOffsetSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
 
     setSize (knobWidth * 2, knobWidth + sliderHeight);
+    startTimer(50);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 {
+    stopTimer();
 }
 
 //==============================================================================
@@ -47,4 +49,10 @@ void AudioPluginAudioProcessorEditor::resized()
     mWidthSlider.setBounds(knobArea.removeFromLeft(knobWidth));
     mSpeedSlider.setBounds(knobArea);
     mOffsetSlider.setBounds(area);
+}
+
+void AudioPluginAudioProcessorEditor::timerCallback()
+{
+    auto position = processorRef.getGraphicsPosition();
+    assert(position >= 0.0f && position <= 1.0f);
 }

@@ -4,7 +4,7 @@
 #include "MyLookAndFeel.h"
 
 //==============================================================================
-class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor
+class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor, juce::Timer
 {
 public:
 
@@ -18,6 +18,8 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+
+    void timerCallback() override;
 
     typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 

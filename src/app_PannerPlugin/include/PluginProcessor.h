@@ -44,13 +44,20 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    float getGraphicsPosition() const;
+
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
     juce::AudioProcessorValueTreeState mParameters;
 
-    std::array<std::unique_ptr<Panner>, 2> mPanner;
+    std::array<std::unique_ptr<Panner>, 3> mPanner;    // index 0: left input
+                                                       // index 1: right input
+                                                       // index 2: for graphics
     std::atomic<float>* mWidth;
     std::atomic<float>* mSpeed;
     std::atomic<float>* mOffset;
+    std::atomic<float> mGraphicsPosition = 0.5f;
+
+    void updateGraphicsPosition();
 };

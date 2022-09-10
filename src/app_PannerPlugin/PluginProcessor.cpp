@@ -125,9 +125,10 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             outputSumL += std::get<0>(output);
             outputSumR += std::get<1>(output);
         }
-        for (auto j = inputBuffer.getNumChannels(); j < mPanner.size(); j++) {
+        for (auto j = inputBuffer.getNumChannels(); j < mPanner.size() - 1; j++) {
             mPanner.at(j)->process(0.0f); // Dummy call to keep lfos in sync
         }
+        updateGraphicsPosition();
         outputBuffer.getWritePointer(0)[i] = outputSumL;
         outputBuffer.getWritePointer(1)[i] = outputSumR;
     }
@@ -161,6 +162,18 @@ void AudioPluginAudioProcessor::setStateInformation (const void* data, int sizeI
             mParameters.replaceState(juce::ValueTree::fromXml(*xmlState));
         }
     }
+}
+
+float AudioPluginAudioProcessor::getGraphicsPosition() const
+{
+    return mGraphicsPosition.load();
+}
+
+void AudioPluginAudioProcessor::updateGraphicsPosition()
+{
+    auto channelPositions = mPanner.at(2)->process(1.0f);
+    mGraphicsPosition.store((std::get<1>(channelPositions) - std::get<0>(channelPositions) + 1.0f) / 2.0f);
+    
 }
 
 //==============================================================================
