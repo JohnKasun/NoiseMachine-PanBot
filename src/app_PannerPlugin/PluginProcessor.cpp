@@ -116,27 +116,17 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
     auto inputBuffer = getBusBuffer(buffer, true, 0);
     auto outputBuffer = getBusBuffer(buffer, false, 0);
-    
-    if (inputBuffer.getNumChannels() == 1) {
-        auto* channelData = inputBuffer.getReadPointer(0);
-        for (int i = 0; i < inputBuffer.getNumSamples(); i++) {
-            auto output = mPanner.at(0)->process(channelData[i]);
-            outputBuffer.getWritePointer(0)[i] = std::get<0>(output);
-            outputBuffer.getWritePointer(1)[i] = std::get<1>(output);
-        }
-    }
-    else {
-        auto* inputL = inputBuffer.getReadPointer(0);
-        auto* inputR = inputBuffer.getReadPointer(1);
-        for (int i = 0; i < inputBuffer.getNumSamples(); i++) {
-            auto outputL = mPanner.at(0)->process(inputL[i]);
-            auto outputR = mPanner.at(1)->process(inputR[i]);
 
-            outputBuffer.getWritePointer(0)[i] = std::get<0>(outputL);
-            outputBuffer.getWritePointer(1)[i] = std::get<1>(outputL);
-            outputBuffer.getWritePointer(0)[i] += std::get<0>(outputR);
-            outputBuffer.getWritePointer(1)[i] += std::get<1>(outputR);
+    for (int i = 0; i < inputBuffer.getNumSamples(); i++) {
+        float outputSumL = 0.0f;
+        float outputSumR = 0.0f;
+        for (auto c = 0; c < inputBuffer.getNumChannels(); c++) {
+            auto output = mPanner.at(c)->process(inputBuffer.getSample(c, i));
+            outputSumL += std::get<0>(output);
+            outputSumR += std::get<1>(output);
         }
+        outputBuffer.getWritePointer(0)[i] = outputSumL;
+        outputBuffer.getWritePointer(1)[i] = outputSumR;
     }
 
 }
