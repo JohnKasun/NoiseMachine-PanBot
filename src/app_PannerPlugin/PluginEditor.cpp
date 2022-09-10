@@ -27,7 +27,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     mOffsetSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
 
     setSize (knobWidth * 2, knobWidth + sliderHeight);
-    startTimer(50);
+    startTimer(10);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -40,6 +40,10 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+
+    juce::Colours::white;
+    juce::Rectangle<float> mPan(0, 0, getWidth() * processorRef.getGraphicsPosition(), getHeight());
+    g.fillRect(mPan);
 }
 
 void AudioPluginAudioProcessorEditor::resized()
@@ -53,6 +57,5 @@ void AudioPluginAudioProcessorEditor::resized()
 
 void AudioPluginAudioProcessorEditor::timerCallback()
 {
-    auto position = processorRef.getGraphicsPosition();
-    assert(position >= 0.0f && position <= 1.0f);
+    repaint();
 }
