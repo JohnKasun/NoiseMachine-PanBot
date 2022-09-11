@@ -1,4 +1,3 @@
 add_subdirectory(app_PanBot)
-add_subdirectory(lib_Lfo)
 add_subdirectory(lib_PanBot)
-add_subdirectory(lib_Wavetable)
+add_subdirectory(lib_PanBotLookAndFeel)

@@ -1,5 +1,4 @@
 add_subdirectory(JUCE)
-add_subdirectory(app_Graphics)
 
 set(APP app_PanBot)
 juce_add_plugin(${APP}

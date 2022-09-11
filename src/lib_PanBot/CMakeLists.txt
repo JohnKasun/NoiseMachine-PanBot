@@ -1,3 +1,6 @@
+add_subdirectory(lib_Lfo)
+add_subdirectory(lib_Wavetable)
+
 set(LIB lib_PanBot)
 add_library(${LIB} STATIC PanBot.cpp include/PanBot.h)
 target_include_directories(${LIB} PUBLIC include)
