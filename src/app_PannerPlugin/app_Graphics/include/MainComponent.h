@@ -2,7 +2,7 @@
 
 #include <juce_gui_extra/juce_gui_extra.h>
 
-#include "NoMachLookAndFeel.h"
+#include "PanBotLookAndFeel.h"
 
 //==============================================================================
 /*
@@ -32,7 +32,7 @@ private:
     // Your private member variables go here...
     juce::Slider slider1;
     juce::Slider slider2;
-    NoMachLookAndFeel mNoMachLookAndFeel;
+    PanBotLookAndFeel mNoMachLookAndFeel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };
