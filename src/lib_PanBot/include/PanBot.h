@@ -6,10 +6,10 @@
 #include <vector>
 #include <tuple>
 
-class Panner {
+class PanBot {
 public:
-	Panner(float sampleRate);
-	~Panner();
+	PanBot(float sampleRate);
+	~PanBot();
 
 	void setWidth(float widthInPercent);
 	void setSpeed(float speedInHz);

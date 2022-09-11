@@ -1,6 +1,6 @@
-#include "Panner.h"
+#include "PanBot.h"
 
-Panner::Panner(float sampleRate)
+PanBot::PanBot(float sampleRate)
 {
 	if (sampleRate <= 0.0f) throw Exception("Invalid Sample Rate...");
 
@@ -16,11 +16,11 @@ Panner::Panner(float sampleRate)
 	setOffset(0.0f);
 }
 
-Panner::~Panner()
+PanBot::~PanBot()
 {
 }
 
-void Panner::setWidth(float widthInPercent)
+void PanBot::setWidth(float widthInPercent)
 {
 	if (widthInPercent < 0.0f || widthInPercent > 100.0f) throw Exception("Invalid Width Parameter");
 
@@ -30,7 +30,7 @@ void Panner::setWidth(float widthInPercent)
 	}
 }
 
-void Panner::setSpeed(float speedInHz)
+void PanBot::setSpeed(float speedInHz)
 {
 	if (speedInHz < 0.0f || speedInHz > 5.0f) throw Exception("Invalid Speed Parameter");
 
@@ -39,7 +39,7 @@ void Panner::setSpeed(float speedInHz)
 	}
 }
 
-void Panner::setOffset(float offset)
+void PanBot::setOffset(float offset)
 {
 	float offsetNorm = offset / 100.0f / 2.0f;
 
@@ -47,7 +47,7 @@ void Panner::setOffset(float offset)
 	mLfos.at(1)->setParam(Lfo::dc, 0.5f + offsetNorm);
 }
 
-std::tuple<float, float> Panner::process(float input)
+std::tuple<float, float> PanBot::process(float input)
 {
 	auto leftLfoVal = std::max<float>(0.0f, std::min<float>(mLfos.at(0)->process(), 1.0f));
 	auto rightLfoVal = std::max<float>(0.0f, std::min<float>(mLfos.at(1)->process(), 1.0f));

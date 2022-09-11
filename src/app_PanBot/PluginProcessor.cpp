@@ -78,15 +78,15 @@ void AudioPluginAudioProcessor::changeProgramName (int index, const juce::String
 void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     juce::ignoreUnused (sampleRate, samplesPerBlock);
-    for (auto& panner : mPanner) {
-        panner.reset(new Panner(sampleRate));
+    for (auto& panBot : mPanBot) {
+        panBot.reset(new PanBot(sampleRate));
     }
 }
 
 void AudioPluginAudioProcessor::releaseResources()
 {
-    for (auto& panner : mPanner) {
-        panner.reset();
+    for (auto& panBot : mPanBot) {
+        panBot.reset();
     }
 }
 
@@ -108,10 +108,10 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::ignoreUnused (midiMessages);
     juce::ScopedNoDenormals noDenormals;
 
-    for (auto& panner : mPanner) {
-        panner->setWidth(*mWidth);
-        panner->setSpeed(*mSpeed);
-        panner->setOffset(*mOffset);
+    for (auto& panBot : mPanBot) {
+        panBot->setWidth(*mWidth);
+        panBot->setSpeed(*mSpeed);
+        panBot->setOffset(*mOffset);
     }
 
     auto inputBuffer = getBusBuffer(buffer, true, 0);
@@ -121,12 +121,12 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         float outputSumL = 0.0f;
         float outputSumR = 0.0f;
         for (auto c = 0; c < inputBuffer.getNumChannels(); c++) {
-            auto output = mPanner.at(c)->process(inputBuffer.getSample(c, i));
+            auto output = mPanBot.at(c)->process(inputBuffer.getSample(c, i));
             outputSumL += std::get<0>(output);
             outputSumR += std::get<1>(output);
         }
-        for (auto j = inputBuffer.getNumChannels(); j < mPanner.size() - 1; j++) {
-            mPanner.at(j)->process(0.0f); // Dummy call to keep lfos in sync
+        for (auto j = inputBuffer.getNumChannels(); j < mPanBot.size() - 1; j++) {
+            mPanBot.at(j)->process(0.0f); // Dummy call to keep lfos in sync
         }
         updateGraphicsPosition();
         outputBuffer.getWritePointer(0)[i] = outputSumL;
@@ -171,7 +171,7 @@ float AudioPluginAudioProcessor::getGraphicsPosition() const
 
 void AudioPluginAudioProcessor::updateGraphicsPosition()
 {
-    auto channelPositions = mPanner.at(2)->process(1.0f);
+    auto channelPositions = mPanBot.at(2)->process(1.0f);
     mGraphicsPosition.store((std::get<1>(channelPositions) - std::get<0>(channelPositions) + 1.0f) / 2.0f);
     
 }

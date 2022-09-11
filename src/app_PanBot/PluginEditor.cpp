@@ -12,14 +12,14 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     mWidthSlider.setSliderStyle(juce::Slider::Rotary);
     mWidthSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     mWidthSlider.setName("Width");
-    mWidthSlider.setLookAndFeel(&mMyLookAndFeel);
+    mWidthSlider.setLookAndFeel(&mPanBotLookAndFeel);
 
     addAndMakeVisible(mSpeedSlider);
     mSpeedAttachment.reset(new SliderAttachment(mVts, "speed", mSpeedSlider));
     mSpeedSlider.setSliderStyle(juce::Slider::Rotary);
     mSpeedSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     mSpeedSlider.setName("Speed");
-    mSpeedSlider.setLookAndFeel(&mMyLookAndFeel);
+    mSpeedSlider.setLookAndFeel(&mPanBotLookAndFeel);
 
     addAndMakeVisible(mOffsetSlider);
     mOffsetAttachment.reset(new SliderAttachment(mVts, "offset", mOffsetSlider));

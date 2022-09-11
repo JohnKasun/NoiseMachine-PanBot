@@ -1,5 +1,5 @@
 set(TEST_FILES
-        lib_Panner/test/testPanner.cpp
+        lib_PanBot/test/testPanBot.cpp
         lib_Lfo/test/testLfo.cpp 
         lib_Wavetable/test/testWavetable.cpp)
 list(TRANSFORM TEST_FILES PREPEND "${CMAKE_SOURCE_DIR}/src/")
@@ -9,7 +9,7 @@ add_executable(${APP} ${TEST_FILES})
 target_include_directories(${APP} PRIVATE include)
 target_link_libraries(${APP}
     PRIVATE
-        lib_Panner
+        lib_PanBot
         lib_Lfo
         gtest_main
 )

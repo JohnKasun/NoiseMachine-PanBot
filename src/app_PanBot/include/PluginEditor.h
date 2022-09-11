@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PluginProcessor.h"
-#include "MyLookAndFeel.h"
+#include "PanBotLookAndFeel.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor, juce::Timer
@@ -26,7 +26,7 @@ public:
 private:
     AudioPluginAudioProcessor& processorRef;
     juce::AudioProcessorValueTreeState& mVts;
-    MyLookAndFeel mMyLookAndFeel;
+    PanBotLookAndFeel mPanBotLookAndFeel;
 
     juce::Slider mWidthSlider;
     std::unique_ptr<SliderAttachment> mWidthAttachment;

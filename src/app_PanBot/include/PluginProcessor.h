@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Panner.h"
+#include "PanBot.h"
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
@@ -51,7 +51,7 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
     juce::AudioProcessorValueTreeState mParameters;
 
-    std::array<std::unique_ptr<Panner>, 3> mPanner;    // index 0: left input
+    std::array<std::unique_ptr<PanBot>, 3> mPanBot;    // index 0: left input
                                                        // index 1: right input
                                                        // index 2: for graphics
     std::atomic<float>* mWidth;

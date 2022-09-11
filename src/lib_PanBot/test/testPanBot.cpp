@@ -4,32 +4,32 @@
 
 #include "DataFileIO.h"
 #include "GTestUtil.h"
-#include "Panner.h"
+#include "PanBot.h"
 #include "Synthesis.h"
 #include "Vector.h"
 
-class PannerTestSuite : public ::testing::Test {
+class PanBotTestSuite : public ::testing::Test {
 protected:
 	void SetUp() override {
 		mSampleRate = 44100;
-		mPanner.reset(new Panner(mSampleRate));
+		mPanBot.reset(new PanBot(mSampleRate));
 	}
 	void TearDown() override {
-		mPanner.reset();
+		mPanBot.reset();
 		mInput.clear();
 		mOutput[0].clear();
 		mOutput[1].clear();
 		mGround[0].clear();
 		mGround[1].clear();
 	}
-	std::unique_ptr<Panner> mPanner;
+	std::unique_ptr<PanBot> mPanBot;
 	std::vector<float> mInput;
 	std::array<std::vector<float>, 2> mOutput;
 	std::array<std::vector<float>, 2> mGround;
 	float mSampleRate;
 };
 
-TEST_F(PannerTestSuite, Ones) {
+TEST_F(PanBotTestSuite, Ones) {
 	const int numSamples = 1000;
 	float leftChannelGround[numSamples]{};
 	float rightChannelGround[numSamples]{};
@@ -41,7 +41,7 @@ TEST_F(PannerTestSuite, Ones) {
 		mGround.at(0).push_back(leftChannelGround[i]);
 		mGround.at(1).push_back(rightChannelGround[i]);
 
-		auto output = mPanner->process(1.0f);
+		auto output = mPanBot->process(1.0f);
 		mOutput.at(0).push_back(std::get<0>(output));
 		mOutput.at(1).push_back(std::get<1>(output));
 	}
@@ -49,10 +49,10 @@ TEST_F(PannerTestSuite, Ones) {
 	GTestUtil::compare(mOutput.at(1), mGround.at(1));
 }
 
-TEST_F(PannerTestSuite, Zeros) {
+TEST_F(PanBotTestSuite, Zeros) {
 	const int numSamples = 1000;
 	for (int i = 0; i < numSamples; i++) {
-		auto output = mPanner->process(0.0f);
+		auto output = mPanBot->process(0.0f);
 		mOutput.at(0).push_back(std::get<0>(output));
 		mOutput.at(1).push_back(std::get<1>(output));
 	}
@@ -60,13 +60,13 @@ TEST_F(PannerTestSuite, Zeros) {
 	GTestUtil::compare(mOutput.at(1), mGround.at(1));
 }
 
-TEST_F(PannerTestSuite, Width) {
+TEST_F(PanBotTestSuite, Width) {
 	auto freq = 5.0f;
 	std::vector<float> widths{ 0, 25, 50, 75, 100 };
 	for (auto width : widths) {
 		SetUp();
-		mPanner->setSpeed(freq);
-		mPanner->setWidth(width);
+		mPanBot->setSpeed(freq);
+		mPanBot->setWidth(width);
 		const int numSamples = 10000;
 		float leftChannelGround[numSamples]{};
 		float rightChannelGround[numSamples]{};
@@ -78,7 +78,7 @@ TEST_F(PannerTestSuite, Width) {
 			mGround.at(0).push_back(leftChannelGround[i]);
 			mGround.at(1).push_back(rightChannelGround[i]);
 
-			auto output = mPanner->process(1.0f);
+			auto output = mPanBot->process(1.0f);
 			mOutput.at(0).push_back(std::get<0>(output));
 			mOutput.at(1).push_back(std::get<1>(output));
 		}
