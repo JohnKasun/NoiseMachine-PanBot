@@ -1,0 +1,3 @@
+[submodule "src/app_PanBot/JUCE"]
+	path = src/app_PanBot/JUCE
+	url = https://github.com/juce-framework/JUCE.git
