@@ -27,7 +27,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     mOffsetSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
 
     setSize (knobWidth * 2, knobWidth + sliderHeight * 2);
-    startTimer(5);
+    startTimer(1);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
