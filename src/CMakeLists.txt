@@ -1,3 +1,3 @@
 add_subdirectory(app_PanBot)
-add_subdirectory(lib_PanBot)
+add_subdirectory(lib_PanBotEngine)
 add_subdirectory(lib_PanBotLookAndFeel)

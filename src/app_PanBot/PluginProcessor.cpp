@@ -79,7 +79,7 @@ void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
 {
     juce::ignoreUnused (sampleRate, samplesPerBlock);
     for (auto& panBot : mPanBot) {
-        panBot.reset(new PanBot(sampleRate));
+        panBot.reset(new PanBotEngine(sampleRate));
     }
 }
 
