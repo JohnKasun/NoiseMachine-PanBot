@@ -17,6 +17,7 @@ public:
 
     //==============================================================================
     void paint (juce::Graphics&) override;
+    void paintOverChildren(juce::Graphics& g) override;
     void resized() override;
 
     void timerCallback() override;

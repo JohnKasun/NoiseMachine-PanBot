@@ -27,7 +27,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     mOffsetSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     mOffsetSlider.setLookAndFeel(&mPanBotLookAndFeel);
 
-    setSize (knobWidth * 2, knobWidth + sliderHeight * 2);
+    setSize (knobWidth * 2, knobWidth + sliderHeight);
     startTimer(1);
 }
 
@@ -41,12 +41,14 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(juce::Colours::darkgrey);
+}
 
-    juce::Colours::white;
-    juce::Rectangle<float> mPanRect(0, 0, 5 , 25);
-    mPanRect.setCentre(mOffsetSlider.getWidth() * processorRef.getGraphicsPosition(), knobWidth + sliderHeight + sliderHeight / 2);
-    g.fillRect(mPanRect);
-
+void AudioPluginAudioProcessorEditor::paintOverChildren(juce::Graphics& g)
+{
+    juce::Rectangle<float> mPanRect(0, 0, 10, 10);
+    mPanRect.setCentre(mOffsetSlider.getWidth() * processorRef.getGraphicsPosition(), mOffsetSlider.getY() + mOffsetSlider.getHeight() / 2.0f);
+    g.setColour(juce::Colours::red);
+    g.fillEllipse(mPanRect);
 }
 
 void AudioPluginAudioProcessorEditor::resized()
