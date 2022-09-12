@@ -64,31 +64,22 @@ void PanBotLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
 
 void PanBotLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle style, juce::Slider& slider)
 {
-	if (style == juce::Slider::LinearVertical)
+	if (style == juce::Slider::LinearHorizontal)
 	{
-		juce::Rectangle<float> baseArea(x, y + height - width, width, width);
+		g.setColour(juce::Colours::grey);
+		g.fillAll();
 
-		juce::Path base;
-		base.addCentredArc(baseArea.getCentreX(), baseArea.getCentreY(), baseArea.getWidth() / 2, baseArea.getHeight() / 2, 0, juce::MathConstants<float>::pi / 6.0f, 11.0f * juce::MathConstants<float>::pi / 6.0f, true);
-		juce::Point<float> arcStart(base.getPointAlongPath(0));
-		juce::Point<float> arcEnd(base.getCurrentPosition());
-		g.setColour(juce::Colours::white);
-		g.strokePath(base, juce::PathStrokeType(1.0f));
-		base.closeSubPath();
-		g.setColour(juce::Colours::green);
-		g.fillPath(base);
+		juce::Rectangle<float> bookend(0, 0, x, height);
+		g.setColour(juce::Colours::darkgrey);
+		g.fillRect(bookend);
 
-		juce::Rectangle<float> neck(arcEnd.getX(), y, arcStart.getX() - arcEnd.getX(), height - baseArea.getHeight() + 3);
-		const float sliderPosScaled = (sliderPos - y) / (maxSliderPos - y) * neck.getHeight();
-		g.setColour(juce::Colours::green);
-		g.fillRect(neck.withTrimmedTop(sliderPosScaled));
+		g.setColour(juce::Colours::darkgrey);
+		g.fillRect(bookend.translated(x + width, 0));
 
-		g.setColour(juce::Colours::white);
-		g.drawLine(juce::Line<float>(neck.getBottomLeft(), neck.getTopLeft()));
-		g.drawLine(juce::Line<float>(neck.getTopLeft(), neck.getTopRight()));
-		g.drawLine(juce::Line<float>(neck.getTopRight(), neck.getBottomRight()));
-
-		g.drawText(slider.getName(), baseArea, juce::Justification::centred);
+		juce::Rectangle<float> thumbSlider(0, 0, 10, height);
+		thumbSlider.setCentre(sliderPos, height * 0.5f);
+		g.setColour(juce::Colours::black);
+		g.fillRect(thumbSlider);
 	}
 	else
 	{

@@ -25,6 +25,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     mOffsetAttachment.reset(new SliderAttachment(mVts, "offset", mOffsetSlider));
     mOffsetSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     mOffsetSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    mOffsetSlider.setLookAndFeel(&mPanBotLookAndFeel);
 
     setSize (knobWidth * 2, knobWidth + sliderHeight * 2);
     startTimer(1);

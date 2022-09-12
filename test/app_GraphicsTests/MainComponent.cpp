@@ -9,12 +9,12 @@ MainComponent::MainComponent()
     slider1.setName("Mix");
 
     addAndMakeVisible(slider2);
-    slider2.setSliderStyle(juce::Slider::LinearVertical);
+    slider2.setSliderStyle(juce::Slider::LinearHorizontal);
     slider2.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     slider2.setName("Gain");
 
     setLookAndFeel(&mNoMachLookAndFeel);
-    setSize(sliderWidth + knobWidth, juce::jmax(sliderHeight, knobHeight));
+    setSize(juce::jmax(sliderWidth, knobWidth), sliderHeight + knobHeight);
 }
 
 MainComponent::~MainComponent()
@@ -31,6 +31,6 @@ void MainComponent::paint(juce::Graphics& g)
 void MainComponent::resized()
 {
     auto area = getLocalBounds();
-    slider1.setBounds(area.removeFromRight(knobWidth));
+    slider1.setBounds(area.removeFromTop(knobHeight));
     slider2.setBounds(area);
 }

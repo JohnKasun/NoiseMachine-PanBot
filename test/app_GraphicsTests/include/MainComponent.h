@@ -16,8 +16,8 @@ public:
         knobWidth = 200,
         knobHeight = knobWidth,
 
-        sliderWidth = 50,
-        sliderHeight = 200
+        sliderWidth = 500,
+        sliderHeight = 100
     };
     //==============================================================================
     MainComponent();
