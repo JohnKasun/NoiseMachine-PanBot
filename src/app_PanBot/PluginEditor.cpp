@@ -41,6 +41,13 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(juce::Colours::darkgrey);
+
+    auto area = getLocalBounds().removeFromBottom(sliderHeight);
+    mLeftBox = area.removeFromLeft(area.getWidth() / 8.0f);
+    mRightBox = area.removeFromRight(area.getWidth() / 8.0f);
+    g.setColour(juce::Colours::red);
+    g.fillRect(mLeftBox);
+    g.fillRect(mRightBox);
 }
 
 void AudioPluginAudioProcessorEditor::paintOverChildren(juce::Graphics& g)
@@ -57,7 +64,7 @@ void AudioPluginAudioProcessorEditor::resized()
     auto knobArea = area.removeFromTop(knobWidth);
     mWidthSlider.setBounds(knobArea.removeFromLeft(knobWidth));
     mSpeedSlider.setBounds(knobArea);
-    mOffsetSlider.setBounds(area.removeFromTop(sliderHeight));
+    mOffsetSlider.setBounds(area.removeFromTop(sliderHeight).reduced(area.getWidth() / 8.0f, 0));
 }
 
 void AudioPluginAudioProcessorEditor::timerCallback()
