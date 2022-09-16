@@ -42,8 +42,8 @@ TEST_F(PanBotEngineTestSuite, Ones) {
 		mGround.at(1).push_back(rightChannelGround[i]);
 
 		auto output = mPanBotEngine->process(1.0f);
-		mOutput.at(0).push_back(std::get<0>(output));
-		mOutput.at(1).push_back(std::get<1>(output));
+		mOutput.at(0).push_back(output.first);
+		mOutput.at(1).push_back(output.second);
 	}
 	GTestUtil::compare(mOutput.at(0), mGround.at(0));
 	GTestUtil::compare(mOutput.at(1), mGround.at(1));
@@ -53,8 +53,8 @@ TEST_F(PanBotEngineTestSuite, Zeros) {
 	const int numSamples = 1000;
 	for (int i = 0; i < numSamples; i++) {
 		auto output = mPanBotEngine->process(0.0f);
-		mOutput.at(0).push_back(std::get<0>(output));
-		mOutput.at(1).push_back(std::get<1>(output));
+		mOutput.at(0).push_back(output.first);
+		mOutput.at(1).push_back(output.second);
 	}
 	GTestUtil::compare(mOutput.at(0), mGround.at(0));
 	GTestUtil::compare(mOutput.at(1), mGround.at(1));
@@ -79,8 +79,8 @@ TEST_F(PanBotEngineTestSuite, Width) {
 			mGround.at(1).push_back(rightChannelGround[i]);
 
 			auto output = mPanBotEngine->process(1.0f);
-			mOutput.at(0).push_back(std::get<0>(output));
-			mOutput.at(1).push_back(std::get<1>(output));
+			mOutput.at(0).push_back(output.first);
+			mOutput.at(1).push_back(output.second);
 		}
 		GTestUtil::compare(mOutput.at(0), mGround.at(0));
 		GTestUtil::compare(mOutput.at(1), mGround.at(1));

@@ -44,7 +44,7 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    float getGraphicsPosition() const;
+    std::pair<float, float> getPanPosition() const;
 
 private:
     //==============================================================================
@@ -57,7 +57,8 @@ private:
     std::atomic<float>* mWidth;
     std::atomic<float>* mSpeed;
     std::atomic<float>* mOffset;
-    std::atomic<float> mGraphicsPosition = 0.5f;
+    std::atomic<float> mPanPositionL = 0.5f;
+    std::atomic<float> mPanPositionR = 0.5f;
 
-    void updateGraphicsPosition();
+    void updatePanPosition();
 };

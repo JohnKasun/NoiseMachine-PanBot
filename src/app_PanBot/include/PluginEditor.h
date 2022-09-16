@@ -38,8 +38,5 @@ private:
     juce::Slider mOffsetSlider;
     std::unique_ptr<SliderAttachment> mOffsetAttachment;
 
-    juce::Rectangle<int> mLeftBox;
-    juce::Rectangle<int> mRightBox;
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };

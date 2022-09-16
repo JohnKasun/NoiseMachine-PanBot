@@ -122,13 +122,13 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         float outputSumR = 0.0f;
         for (auto c = 0; c < inputBuffer.getNumChannels(); c++) {
             auto output = mPanBot.at(c)->process(inputBuffer.getSample(c, i));
-            outputSumL += std::get<0>(output);
-            outputSumR += std::get<1>(output);
+            outputSumL += output.first;
+            outputSumR += output.second;
         }
         for (auto j = inputBuffer.getNumChannels(); j < mPanBot.size() - 1; j++) {
             mPanBot.at(j)->process(0.0f); // Dummy call to keep lfos in sync
         }
-        updateGraphicsPosition();
+        updatePanPosition();
         outputBuffer.getWritePointer(0)[i] = outputSumL;
         outputBuffer.getWritePointer(1)[i] = outputSumR;
     }
@@ -164,16 +164,16 @@ void AudioPluginAudioProcessor::setStateInformation (const void* data, int sizeI
     }
 }
 
-float AudioPluginAudioProcessor::getGraphicsPosition() const
+std::pair<float, float> AudioPluginAudioProcessor::getPanPosition() const
 {
-    return mGraphicsPosition.load();
+    return std::make_pair(mPanPositionL.load(), mPanPositionR.load());
 }
 
-void AudioPluginAudioProcessor::updateGraphicsPosition()
+void AudioPluginAudioProcessor::updatePanPosition()
 {
     auto channelPositions = mPanBot.at(2)->process(1.0f);
-    mGraphicsPosition.store((std::get<1>(channelPositions) - std::get<0>(channelPositions) + 1.0f) / 2.0f);
-    
+    mPanPositionL.store(channelPositions.first);
+    mPanPositionR.store(channelPositions.second);
 }
 
 //==============================================================================

@@ -42,18 +42,13 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(juce::Colours::darkgrey);
 
-    auto area = getLocalBounds().removeFromBottom(sliderHeight);
-    mLeftBox = area.removeFromLeft(area.getWidth() / 8.0f);
-    mRightBox = area.removeFromRight(area.getWidth() / 8.0f);
-    g.setColour(juce::Colours::red);
-    g.fillRect(mLeftBox);
-    g.fillRect(mRightBox);
 }
 
 void AudioPluginAudioProcessorEditor::paintOverChildren(juce::Graphics& g)
 {
     juce::Rectangle<float> mPanRect(0, 0, 10, 10);
-    mPanRect.setCentre(mOffsetSlider.getWidth() * processorRef.getGraphicsPosition(), mOffsetSlider.getY() + mOffsetSlider.getHeight() / 2.0f);
+    auto panPosition = processorRef.getPanPosition();
+    mPanRect.setCentre(mOffsetSlider.getWidth() * ((panPosition.second - panPosition.first + 1) / 2.0f), mOffsetSlider.getY() + mOffsetSlider.getHeight() / 2.0f);
     g.setColour(juce::Colours::red);
     g.fillEllipse(mPanRect);
 }
@@ -64,7 +59,7 @@ void AudioPluginAudioProcessorEditor::resized()
     auto knobArea = area.removeFromTop(knobWidth);
     mWidthSlider.setBounds(knobArea.removeFromLeft(knobWidth));
     mSpeedSlider.setBounds(knobArea);
-    mOffsetSlider.setBounds(area.removeFromTop(sliderHeight).reduced(area.getWidth() / 8.0f, 0));
+    mOffsetSlider.setBounds(area);
 }
 
 void AudioPluginAudioProcessorEditor::timerCallback()

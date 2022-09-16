@@ -15,7 +15,7 @@ public:
 	void setSpeed(float speedInHz);
 	void setOffset(float offset);
 
-	std::tuple<float, float> process(float input);
+	std::pair<float, float> process(float input);
 private:
 	float mSampleRate;
 	std::array<std::unique_ptr<Lfo>, 2> mLfos;

@@ -47,12 +47,12 @@ void PanBotEngine::setOffset(float offset)
 	mLfos.at(1)->setParam(Lfo::dc, 0.5f + offsetNorm);
 }
 
-std::tuple<float, float> PanBotEngine::process(float input)
+std::pair<float, float> PanBotEngine::process(float input)
 {
 	auto leftLfoVal = std::max<float>(0.0f, std::min<float>(mLfos.at(0)->process(), 1.0f));
 	auto rightLfoVal = std::max<float>(0.0f, std::min<float>(mLfos.at(1)->process(), 1.0f));
 	auto leftChannel = input * leftLfoVal;
 	auto rightChannel = input * rightLfoVal;
-	auto out = std::make_tuple(leftChannel, rightChannel);
+	auto out = std::make_pair(leftChannel, rightChannel);
 	return out;
 }

@@ -11,3 +11,13 @@ public:
 	void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const juce::Slider::SliderStyle, juce::Slider&) override;
 };
 
+//class PanVisualizer : juce::Component
+//{
+//public:
+//	PanVisualizer();
+//	~PanVisualizer();
+//	void setPanPosition(float )
+//	void paint(juce::Graphics& g) override;
+//	void resized() override;
+//};
+
