@@ -92,3 +92,19 @@ void PanBotLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 	}
 }
 
+void PanVisualizer::setPanPosition(float leftPan, float rightPan)
+{
+	mPanPosition = (rightPan - leftPan + 1.0f) / 2.0f;
+}
+
+void PanVisualizer::paint(juce::Graphics& g)
+{
+	auto area = getLocalBounds();
+	const auto speakerRectWidth = area.getWidth() / 8.0f;
+	auto leftSpeakerRect = area.removeFromLeft(speakerRectWidth);
+	auto rightSpeakerRect = area.removeFromRight(speakerRectWidth);
+	g.setColour(juce::Colours::red);
+	g.fillRect(leftSpeakerRect);
+	g.fillRect(rightSpeakerRect);
+}
+

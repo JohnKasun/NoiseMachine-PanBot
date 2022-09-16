@@ -13,8 +13,10 @@ MainComponent::MainComponent()
     slider2.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     slider2.setName("Gain");
 
+    addAndMakeVisible(mPanVis);
+
     setLookAndFeel(&mNoMachLookAndFeel);
-    setSize(juce::jmax(sliderWidth, knobWidth), sliderHeight + knobHeight);
+    setSize(juce::jmax(sliderWidth, knobWidth), sliderHeight + knobHeight + sliderHeight);
 }
 
 MainComponent::~MainComponent()
@@ -32,5 +34,6 @@ void MainComponent::resized()
 {
     auto area = getLocalBounds();
     slider1.setBounds(area.removeFromTop(knobHeight));
-    slider2.setBounds(area);
+    slider2.setBounds(area.removeFromTop(sliderHeight));
+    mPanVis.setBounds(area);
 }

@@ -33,6 +33,7 @@ private:
     juce::Slider slider1;
     juce::Slider slider2;
     PanBotLookAndFeel mNoMachLookAndFeel;
+    PanVisualizer mPanVis;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };
