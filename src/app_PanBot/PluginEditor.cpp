@@ -48,7 +48,7 @@ void AudioPluginAudioProcessorEditor::paintOverChildren(juce::Graphics& g)
 {
     juce::Rectangle<float> mPanRect(0, 0, 10, 10);
     auto panPosition = processorRef.getPanPosition();
-    mPanRect.setCentre(mOffsetSlider.getWidth() * ((panPosition.second - panPosition.first + 1) / 2.0f), mOffsetSlider.getY() + mOffsetSlider.getHeight() / 2.0f);
+    mPanRect.setCentre(mOffsetSlider.getWidth() * ((panPosition.second - panPosition.first + 100.0f) / 200.0f), mOffsetSlider.getY() + mOffsetSlider.getHeight() / 2.0f);
     g.setColour(juce::Colours::red);
     g.fillEllipse(mPanRect);
 }

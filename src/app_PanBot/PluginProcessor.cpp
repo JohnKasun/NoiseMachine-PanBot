@@ -171,7 +171,7 @@ std::pair<float, float> AudioPluginAudioProcessor::getPanPosition() const
 
 void AudioPluginAudioProcessor::updatePanPosition()
 {
-    auto channelPositions = mPanBot.at(2)->process(1.0f);
+    auto channelPositions = mPanBot.at(2)->process(100.0f);
     mPanPositionL.store(channelPositions.first);
     mPanPositionR.store(channelPositions.second);
 }

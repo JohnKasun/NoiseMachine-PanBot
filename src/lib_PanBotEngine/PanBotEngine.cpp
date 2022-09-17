@@ -24,7 +24,7 @@ void PanBotEngine::setWidth(float widthInPercent)
 {
 	if (widthInPercent < 0.0f || widthInPercent > 100.0f) throw Exception("Invalid Width Parameter");
 
-	float newAmplitude = (widthInPercent / 100.0f) / 2.0f;
+	float newAmplitude = widthInPercent / 200.0f;
 	for (auto& lfo : mLfos) {
 		lfo->setParam(Lfo::amplitude, newAmplitude);
 	}
@@ -41,7 +41,8 @@ void PanBotEngine::setSpeed(float speedInHz)
 
 void PanBotEngine::setOffset(float offset)
 {
-	float offsetNorm = offset / 100.0f / 2.0f;
+	if (offset < -100.0f || offset > 100.0f) throw Exception("Invalid Offset Parameter");
+	float offsetNorm = offset / 200.0f;
 
 	mLfos.at(0)->setParam(Lfo::dc, 0.5f - offsetNorm);
 	mLfos.at(1)->setParam(Lfo::dc, 0.5f + offsetNorm);
