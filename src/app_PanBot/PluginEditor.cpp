@@ -27,7 +27,9 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     mOffsetSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
     mOffsetSlider.setLookAndFeel(&mPanBotLookAndFeel);
 
-    setSize (knobWidth * 2, knobWidth + sliderHeight);
+    addAndMakeVisible(mPanVis);
+
+    setSize (knobWidth * 2, knobWidth + sliderHeight * 2);
     startTimer(1);
 }
 
@@ -44,25 +46,19 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
 }
 
-void AudioPluginAudioProcessorEditor::paintOverChildren(juce::Graphics& g)
-{
-    juce::Rectangle<float> mPanRect(0, 0, 10, 10);
-    auto panPosition = processorRef.getPanPosition();
-    mPanRect.setCentre(mOffsetSlider.getWidth() * ((panPosition.second - panPosition.first + 100.0f) / 200.0f), mOffsetSlider.getY() + mOffsetSlider.getHeight() / 2.0f);
-    g.setColour(juce::Colours::red);
-    g.fillEllipse(mPanRect);
-}
-
 void AudioPluginAudioProcessorEditor::resized()
 {
     auto area = getLocalBounds();
     auto knobArea = area.removeFromTop(knobWidth);
     mWidthSlider.setBounds(knobArea.removeFromLeft(knobWidth));
     mSpeedSlider.setBounds(knobArea);
-    mOffsetSlider.setBounds(area);
+    mOffsetSlider.setBounds(area.removeFromTop(sliderHeight));
+    mPanVis.setBounds(area);
 }
 
 void AudioPluginAudioProcessorEditor::timerCallback()
 {
+    auto nextPan = processorRef.getPanPosition();
+    mPanVis.setPanPosition(nextPan.first, nextPan.second);
     repaint();
 }

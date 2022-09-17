@@ -17,7 +17,6 @@ public:
 
     //==============================================================================
     void paint (juce::Graphics&) override;
-    void paintOverChildren(juce::Graphics& g) override;
     void resized() override;
 
     void timerCallback() override;
@@ -37,6 +36,8 @@ private:
 
     juce::Slider mOffsetSlider;
     std::unique_ptr<SliderAttachment> mOffsetAttachment;
+
+    PanVisualizer mPanVis;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };
