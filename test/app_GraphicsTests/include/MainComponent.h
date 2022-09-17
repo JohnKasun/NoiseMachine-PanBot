@@ -3,7 +3,6 @@
 #include <juce_gui_extra/juce_gui_extra.h>
 
 #include "PanBotLookAndFeel.h"
-#include "PanBotEngine.h"
 
 //==============================================================================
 /*
@@ -37,7 +36,11 @@ private:
     juce::Slider slider2;
     PanBotLookAndFeel mNoMachLookAndFeel;
     PanVisualizer mPanVis;
-    PanBotEngine mPanBotEngine;
+    std::array<std::pair<float, float>, 3> mPanPositions{
+        std::pair{100.0f, 0.0f},
+        std::pair{50.0f, 50.0f},
+        std::pair{0.0f, 100.0f}
+    };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

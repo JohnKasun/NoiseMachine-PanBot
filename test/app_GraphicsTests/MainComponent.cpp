@@ -1,7 +1,7 @@
 #include "MainComponent.h"
 
 //==============================================================================
-MainComponent::MainComponent() : mPanBotEngine(44100)
+MainComponent::MainComponent()
 {
     addAndMakeVisible(slider1);
     slider1.setSliderStyle(juce::Slider::Rotary);
@@ -14,11 +14,8 @@ MainComponent::MainComponent() : mPanBotEngine(44100)
     slider2.setName("Gain");
 
     addAndMakeVisible(mPanVis);
-    mPanBotEngine.setOffset(0);
-    mPanBotEngine.setWidth(100);
-    mPanBotEngine.setSpeed(5);
 
-    startTimer(1);
+    startTimer(500);
 
     setLookAndFeel(&mNoMachLookAndFeel);
     setSize(juce::jmax(sliderWidth, knobWidth), sliderHeight + knobHeight + sliderHeight);
@@ -46,7 +43,9 @@ void MainComponent::resized()
 
 void MainComponent::timerCallback()
 {
-    auto pan = mPanBotEngine.process(100.0f);
-    mPanVis.setPanPosition(pan.first, pan.second);
+    static int counter = 0;
+    auto nextPan = mPanPositions.at(counter);
+    mPanVis.setPanPosition(nextPan.first, nextPan.second);
+    counter = (counter + 1) % 3;
     repaint();
 }
