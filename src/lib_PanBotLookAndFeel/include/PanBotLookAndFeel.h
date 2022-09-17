@@ -21,4 +21,3 @@ public:
 private:
 	float mPanPosition = 0.5f; 
 };
-

@@ -10,7 +10,7 @@ public:
 
     enum {
         knobWidth = 200,
-        sliderHeight = 100,
+        sliderHeight = 50,
     };
     explicit AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor&, juce::AudioProcessorValueTreeState&);
     ~AudioPluginAudioProcessorEditor() override;

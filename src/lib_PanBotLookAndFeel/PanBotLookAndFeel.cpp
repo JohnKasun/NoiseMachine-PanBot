@@ -112,6 +112,12 @@ void PanVisualizer::paint(juce::Graphics& g)
 	g.drawFittedText("L", leftSpeakerRect, juce::Justification::centred, 1);
 	g.drawFittedText("R", rightSpeakerRect, juce::Justification::centred, 1);
 
+	juce::Line<float> bottomMiddleTick(getWidth() * 0.5f, getHeight(), getWidth() * 0.5f, getHeight() * 0.75f);
+	juce::Line<float> topMiddleTick(getWidth() * 0.5f, 0, getWidth() * 0.5f, getHeight() * 0.25f);
+	g.setColour(juce::Colours::white);
+	g.drawLine(bottomMiddleTick, 1.0f);
+	g.drawLine(topMiddleTick, 1.0f);
+
 	juce::Rectangle<float> mPanRect(0, 0, 10, 10);
 	auto panPosition = mPanPosition;
 	mPanRect.setCentre(leftSpeakerRect.getCentreX() + (rightSpeakerRect.getCentreX() - leftSpeakerRect.getCentreX()) * panPosition, getHeight() / 2.0f);
