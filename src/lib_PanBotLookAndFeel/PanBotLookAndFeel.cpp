@@ -66,18 +66,25 @@ void PanBotLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 {
 	if (style == juce::Slider::LinearHorizontal)
 	{
-		g.setColour(juce::Colours::grey);
-		g.fillAll();
+		auto area = slider.getLocalBounds();
+		auto labelArea = area.removeFromBottom(area.getHeight() / 8.0f);
+		auto sliderArea = area;
 
-		juce::Rectangle<float> bookend(0, 0, x, height);
+		g.setColour(juce::Colours::grey);
+		g.fillRect(sliderArea);
+
+		g.setColour(juce::Colours::red);
+		g.fillRect(labelArea);
+
+		juce::Rectangle<float> bookend(0, 0, x, sliderArea.getHeight());
 		g.setColour(juce::Colours::darkgrey);
 		g.fillRect(bookend);
 
 		g.setColour(juce::Colours::darkgrey);
 		g.fillRect(bookend.translated(x + width, 0));
 
-		juce::Rectangle<float> thumbSlider(0, 0, 10, height);
-		thumbSlider.setCentre(sliderPos, height * 0.5f);
+		juce::Rectangle<float> thumbSlider(0, 0, 10, sliderArea.getHeight());
+		thumbSlider.setCentre(sliderPos, sliderArea.getHeight() * 0.5f);
 		g.setColour(juce::Colours::black);
 		g.fillRect(thumbSlider);
 	}
