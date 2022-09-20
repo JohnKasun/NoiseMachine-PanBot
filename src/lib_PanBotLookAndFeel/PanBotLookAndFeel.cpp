@@ -121,8 +121,16 @@ void PanVisualizer::paint(juce::Graphics& g)
 	juce::Rectangle<float> mPanRect(0, 0, 10, 10);
 	auto panPosition = mPanPosition;
 	mPanRect.setCentre(leftSpeakerRect.getCentreX() + (rightSpeakerRect.getCentreX() - leftSpeakerRect.getCentreX()) * panPosition, getHeight() / 2.0f);
+
+	if (!mPrevRects.empty()) {
+		for 
+		g.setColour(juce::Colours::white);
+		g.fillEllipse(mPrevRects.top());
+		mPrevRects.pop();
+	}
 	g.setColour(juce::Colours::red);
 	g.fillEllipse(mPanRect);
+	mPrevRects.push(mPanRect);
 
 	g.setColour(juce::Colours::black);
 	g.drawRect(getLocalBounds());
