@@ -29,7 +29,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
 
     addAndMakeVisible(mPanVis);
 
-    setSize (knobWidth * 2, knobWidth + sliderHeight * 2);
+    setSize (knobWidth * 2, knobWidth + sliderHeight * 2 + panVisHeight);
     startTimer(1);
 }
 
@@ -49,11 +49,11 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 void AudioPluginAudioProcessorEditor::resized()
 {
     auto area = getLocalBounds();
+    mPanVis.setBounds(area.removeFromTop(panVisHeight));
     auto knobArea = area.removeFromTop(knobWidth);
     mWidthSlider.setBounds(knobArea.removeFromLeft(knobWidth));
     mSpeedSlider.setBounds(knobArea);
-    mOffsetSlider.setBounds(area.removeFromTop(sliderHeight));
-    mPanVis.setBounds(area);
+    mOffsetSlider.setBounds(area.removeFromTop(sliderHeight).reduced(10, 0));
 }
 
 void AudioPluginAudioProcessorEditor::timerCallback()
