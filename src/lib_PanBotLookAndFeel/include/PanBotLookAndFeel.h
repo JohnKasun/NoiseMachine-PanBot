@@ -1,7 +1,7 @@
 #pragma once
 
 #include <juce_gui_extra/juce_gui_extra.h>
-#include <stack>
+#include <deque>
 
 class PanBotLookAndFeel : public juce::LookAndFeel_V4
 {
@@ -21,5 +21,5 @@ public:
 	void paint(juce::Graphics& g) override;
 private:
 	float mPanPosition = 0.5f;
-	std::stack<juce::Rectangle<float>> mPrevRects;
+	std::deque<juce::Rectangle<float>> mPrevRects;
 };
