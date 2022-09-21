@@ -51,7 +51,7 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
     juce::AudioProcessorValueTreeState mParameters;
 
-    std::array<std::unique_ptr<PanBotEngine>, 3> mPanBot;    // index 0: left input
+    std::array<std::unique_ptr<PanBotEngine>, 2> mPanBot;    // index 0: left input
                                                        // index 1: right input
                                                        // index 2: for graphics
     std::atomic<float>* mWidth;

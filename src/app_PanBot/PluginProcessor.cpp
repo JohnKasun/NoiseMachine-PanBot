@@ -118,19 +118,14 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     auto outputBuffer = getBusBuffer(buffer, false, 0);
 
     for (int i = 0; i < inputBuffer.getNumSamples(); i++) {
-        float outputSumL = 0.0f;
-        float outputSumR = 0.0f;
+        auto input = 0.0f;
         for (auto c = 0; c < inputBuffer.getNumChannels(); c++) {
-            auto output = mPanBot.at(c)->process(inputBuffer.getSample(c, i));
-            outputSumL += output.first;
-            outputSumR += output.second;
+            input += inputBuffer.getSample(c, i);
         }
-        for (auto j = inputBuffer.getNumChannels(); j < mPanBot.size() - 1; j++) {
-            mPanBot.at(j)->process(0.0f); // Dummy call to keep lfos in sync
-        }
+        auto output = mPanBot.at(0)->process(input);
+        outputBuffer.getWritePointer(0)[i] = output.first;
+        outputBuffer.getWritePointer(1)[i] = output.second;
         updatePanPosition();
-        outputBuffer.getWritePointer(0)[i] = outputSumL;
-        outputBuffer.getWritePointer(1)[i] = outputSumR;
     }
 
 }
@@ -171,7 +166,7 @@ std::pair<float, float> AudioPluginAudioProcessor::getPanPosition() const
 
 void AudioPluginAudioProcessor::updatePanPosition()
 {
-    auto channelPositions = mPanBot.at(2)->process(100.0f);
+    auto channelPositions = mPanBot.at(1)->process(100.0f);
     mPanPositionL.store(channelPositions.first);
     mPanPositionR.store(channelPositions.second);
 }
