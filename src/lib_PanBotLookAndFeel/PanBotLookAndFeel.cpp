@@ -105,6 +105,9 @@ void PanBotLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 		thumbSlider.setCentre(sliderPos, sliderArea.getY() + sliderArea.getHeight() * 0.5f);
 		g.setColour(juce::Colours::black);
 		g.fillRect(thumbSlider);
+
+		g.setColour(juce::Colours::darkgrey);
+		g.drawRect(sliderArea);
 	}
 	else
 	{
