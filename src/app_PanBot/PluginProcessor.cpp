@@ -9,7 +9,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
     mParameters(*this, nullptr, juce::Identifier("Parameters"), {
         std::make_unique<juce::AudioParameterFloat>("width", "Width", 0, 100, 100),
         std::make_unique<juce::AudioParameterFloat>("speed", "Speed", 1, 5, 1),
-        std::make_unique<juce::AudioParameterFloat>("offset", "Offset", -100, 100, 0)
+        std::make_unique<juce::AudioParameterInt>("offset", "Offset", -100, 100, 0)
         })
 {
     mWidth = mParameters.getRawParameterValue("width");

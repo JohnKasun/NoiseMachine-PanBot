@@ -69,10 +69,13 @@ void PanBotLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 		auto area = slider.getLocalBounds();
 		auto topSliver = area.removeFromTop(area.getHeight() / 5.0f);
 		auto labelArea = topSliver.removeFromLeft(topSliver.getWidth() / 8.0f);
+		auto bottomSliver = area.removeFromBottom(area.getHeight() / 5.0f);
+		auto valueArea = bottomSliver.removeFromRight(bottomSliver.getWidth() / 8.0f);
 		auto sliderArea = area;
 
 		g.setColour(juce::Colours::darkgrey);
 		g.fillRect(labelArea);
+		g.fillRect(valueArea);
 
 		juce::Path topTriangle;
 		topTriangle.addTriangle(labelArea.getTopRight().getX(), labelArea.getTopRight().getY(),
@@ -80,8 +83,15 @@ void PanBotLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 			labelArea.getTopRight().getX() + labelArea.getWidth() / 4.0f, labelArea.getBottomRight().getY());
 		g.fillPath(topTriangle);
 
+		juce::Path bottomTriangle;
+		bottomTriangle.addTriangle(valueArea.getTopLeft().getX(), valueArea.getTopLeft().getY(),
+			valueArea.getTopLeft().getX(), valueArea.getBottomLeft().getY(),
+			valueArea.getTopLeft().getX() - valueArea.getWidth() / 4.0f, valueArea.getTopLeft().getY());
+		g.fillPath(bottomTriangle);
+
 		g.setColour(juce::Colours::white);
 		g.drawFittedText(slider.getName(), labelArea, juce::Justification::centred, 1);
+		g.drawFittedText(juce::String(slider.getValue()), valueArea, juce::Justification::centred, 1);
 
 		g.setColour(juce::Colours::grey);
 		g.fillRect(sliderArea);
