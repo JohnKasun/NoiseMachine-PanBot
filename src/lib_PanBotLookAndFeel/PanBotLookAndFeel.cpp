@@ -67,24 +67,32 @@ void PanBotLookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int wi
 	if (style == juce::Slider::LinearHorizontal)
 	{
 		auto area = slider.getLocalBounds();
-		auto labelArea = area.removeFromBottom(area.getHeight() / 8.0f);
+		auto topSliver = area.removeFromTop(area.getHeight() / 5.0f);
+		auto labelArea = topSliver.removeFromLeft(topSliver.getWidth() / 8.0f);
 		auto sliderArea = area;
+
+		g.setColour(juce::Colours::darkgrey);
+		g.fillRect(labelArea);
+
+		juce::Path topTriangle;
+		topTriangle.addTriangle(labelArea.getTopRight().getX(), labelArea.getTopRight().getY(),
+			labelArea.getTopRight().getX(), labelArea.getBottomRight().getY(),
+			labelArea.getTopRight().getX() + labelArea.getWidth() / 4.0f, labelArea.getBottomRight().getY());
+		g.fillPath(topTriangle);
+
+		g.setColour(juce::Colours::white);
+		g.drawFittedText(slider.getName(), labelArea, juce::Justification::centred, 1);
 
 		g.setColour(juce::Colours::grey);
 		g.fillRect(sliderArea);
 
-		g.setColour(juce::Colours::red);
-		g.fillRect(labelArea);
-
-		juce::Rectangle<float> bookend(0, 0, x, sliderArea.getHeight());
+		juce::Rectangle<float> bookend(sliderArea.getX(), sliderArea.getY(), x, sliderArea.getHeight());
 		g.setColour(juce::Colours::darkgrey);
 		g.fillRect(bookend);
-
-		g.setColour(juce::Colours::darkgrey);
 		g.fillRect(bookend.translated(x + width, 0));
 
 		juce::Rectangle<float> thumbSlider(0, 0, 10, sliderArea.getHeight());
-		thumbSlider.setCentre(sliderPos, sliderArea.getHeight() * 0.5f);
+		thumbSlider.setCentre(sliderPos, sliderArea.getY() + sliderArea.getHeight() * 0.5f);
 		g.setColour(juce::Colours::black);
 		g.fillRect(thumbSlider);
 	}
@@ -130,9 +138,11 @@ void PanVisualizer::paint(juce::Graphics& g)
 	mPanRect.setCentre(leftSpeakerRect.getCentreX() + (rightSpeakerRect.getCentreX() - leftSpeakerRect.getCentreX()) * panPosition, getHeight() / 2.0f);
 
 	if (!mPrevRects.empty()) {
+		int reduction = mPrevRects.size();
 		for (auto rect : mPrevRects) {
-			g.setColour(juce::Colours::white);
-			g.fillEllipse(rect);
+			g.setColour(juce::Colours::lightpink);
+			g.fillEllipse(rect.reduced(reduction));
+			reduction--;
 		}
 	}
 	g.setColour(juce::Colours::red);

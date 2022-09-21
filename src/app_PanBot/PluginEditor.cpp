@@ -25,11 +25,12 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     mOffsetAttachment.reset(new SliderAttachment(mVts, "offset", mOffsetSlider));
     mOffsetSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     mOffsetSlider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    mOffsetSlider.setName("Offset");
     mOffsetSlider.setLookAndFeel(&mPanBotLookAndFeel);
 
     addAndMakeVisible(mPanVis);
 
-    setSize (knobWidth * 2, knobWidth + sliderHeight * 2 + panVisHeight);
+    setSize (knobWidth * 2, knobWidth + sliderHeight * 1.5 + panVisHeight);
     startTimer(1);
 }
 
@@ -42,7 +43,7 @@ AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll(juce::Colours::darkgrey);
+    g.fillAll(juce::Colours::dimgrey);
 
 }
 
