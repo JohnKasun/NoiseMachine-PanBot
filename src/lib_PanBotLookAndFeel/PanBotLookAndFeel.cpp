@@ -153,12 +153,12 @@ void PanVisualizer::paint(juce::Graphics& g)
 	if (!mPrevRects.empty()) {
 		int reduction = mPrevRects.size();
 		for (auto rect : mPrevRects) {
-			g.setColour(juce::Colours::lightpink);
+			g.setColour(juce::Colours::darkgrey);
 			g.fillEllipse(rect.reduced(reduction));
 			reduction--;
 		}
 	}
-	g.setColour(juce::Colours::red);
+	g.setColour(juce::Colours::black);
 	g.fillEllipse(mPanRect);
 
 	mPrevRects.push_back(mPanRect);
